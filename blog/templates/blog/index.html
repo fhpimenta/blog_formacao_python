@@ -1,0 +1,44 @@
+{% extends 'layouts/main.html' %}
+
+{% block content %}
+
+<!-- Blog Entries Column -->
+<div class="col-md-12">
+
+    <div class="my-4"></div>
+
+    {% for post in posts %}
+    <!-- Blog Post -->
+    <div class="card mb-4">
+        <img class="card-img-top" src="http://placehold.it/900x200?text={{ post.title }}" alt="Card image cap">
+        <div class="card-body">
+          <h2 class="card-title">{{ post.title }}</h2>
+            {% autoescape off %}
+          <p class="card-text">{{ post.body|slice:":100"|add:'...' }}</p>
+            {% endautoescape %}
+          <a href="{% url 'show' post.id %}" class="btn btn-primary">Leia mais &rarr;</a>
+        </div>
+        <div class="card-footer text-muted">
+            Publicado em {{ post.pub_date|date:"D, d/m/Y H:i:s" }}, por
+          <a href="#">{{ post.author }}</a>
+        </div>
+    </div>
+    {% endfor %}
+
+  <!-- Pagination -->
+  <ul class="pagination justify-content-center mb-4">
+    {% if posts.has_previous %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ posts.previous_page_number }}">&larr; Older</a>
+    </li>
+    {% endif %}
+    {% if posts.has_next %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ posts.next_page_number }}">Newer &rarr;</a>
+    </li>
+    {% endif %}
+  </ul>
+
+</div>
+
+{% endblock %}

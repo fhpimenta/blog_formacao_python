@@ -1,0 +1,61 @@
+{% extends 'layouts/main.html' %}
+
+{% block content %}
+<div class="col-lg-8">
+
+    <!-- Title -->
+    <h1 class="mt-4">{{ post.title }}</h1>
+
+    <!-- Author -->
+    <p class="lead">
+    por
+    <a href="#">{{ post.author }}</a>
+    </p>
+
+    <hr>
+
+    <!-- Date/Time -->
+    <p>Publicado em {{ post.pub_date|date:'D, d/m/Y H:i:s' }}</p>
+
+    <hr>
+
+    <!-- Preview Image -->
+    <img class="img-fluid rounded" src="http://placehold.it/900x300" alt="">
+
+    <hr>
+
+    <!-- Post Content -->
+    {% autoescape off %}
+    {{ post.body }}
+    {% endautoescape %}
+
+    <hr>
+
+    <!-- Comments Form -->
+    <div class="card my-4">
+        <h5 class="card-header">Deixe um comentário:</h5>
+        <div class="card-body">
+            <form method="post" novalidate>
+                {% csrf_token %}
+                {% include 'blog/includes/form.html' with form=form %}
+                <button type="submit" class="btn btn-primary">Enviar</button>
+            </form>
+        </div>
+    </div>
+
+    {% if comments|length > 0 %}
+        {% for comment in comments %}
+            <!-- Single Comment -->
+            <div class="media mb-4">
+                <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                <div class="media-body">
+                    <h5 class="mt-0">{{ comment.name }}</h5>
+                    {{ comment.body }}
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+    </div>
+    </div>
+</div>
+{% endblock %}
