@@ -1,9 +1,37 @@
 {% extends "layouts/main.html" %}
+{% block title %}Login{% endblock %}
+{% load widget_tweaks %}
 
 {% block content %}
-    <form method='post'>
+    <div class="col-md-12">
+    <div class="login-box">
+        <div class="login-logo">
+            Login
+        </div>
+        <form method='post'>
         {% csrf_token %}
-        {{ form }}
-        <input type="submit" value="Entrar">
+        {% for field in form.visible_fields %}
+            <div class="form-group">
+        {% if form.is_bound %}
+          {% if field.errors %}
+            {% render_field field class="form-control is-invalid" placeholder=field.label %}
+            {% for error in field.errors %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
+            {% render_field field class="form-control is-valid" placeholder=field.label %}
+          {% endif %}
+        {% else %}
+          {% render_field field class="form-control" placeholder=field.label %}
+        {% endif %}
+    </div>
+        {% endfor %}
+        <input type="submit" class="btn btn-primary btn-block" value="Entrar">
     </form>
+    </div>
+
+    </div>
+
 {% endblock content %}
